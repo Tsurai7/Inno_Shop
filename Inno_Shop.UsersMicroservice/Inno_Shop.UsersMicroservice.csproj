@@ -8,12 +8,13 @@
 
   <ItemGroup>
     <Folder Include="Application\Services\" />
-    <Folder Include="Domain\Models\" />
-    <Folder Include="Domain\Interfaces\" />
-    <Folder Include="Infrastucture\Data\" />
-    <Folder Include="Infrastucture\Repositories\" />
     <Folder Include="Presentation\Controllers\" />
     <Folder Include="Tests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
   </ItemGroup>
 
 </Project>
