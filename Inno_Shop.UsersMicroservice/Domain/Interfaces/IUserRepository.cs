@@ -5,10 +5,10 @@ namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
     public interface IUserRepository
     {
         Task<List<User>> GetAllUsersAsync();
-        Task<User> GetUserAsync(Guid id);
+        Task<User> GetUserAsync(int id);
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
-        Task DeleteUserAsync(Guid id);
+        Task DeleteUserAsync(int id);
         Task SaveAsync();
     }
 }

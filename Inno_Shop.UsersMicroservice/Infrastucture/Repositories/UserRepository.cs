@@ -20,7 +20,7 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
             await _context.Users.ToListAsync();
 
 
-        public async Task<User> GetUserAsync(Guid id) =>
+        public async Task<User> GetUserAsync(int id) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             
 
@@ -42,7 +42,7 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
 
 
 
-    public async Task DeleteUserAsync(Guid id)
+        public async Task DeleteUserAsync(int id)
         {
             var userFromDb = await _context.Users.FindAsync(new object[] { id });
 
@@ -61,6 +61,7 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
 
         protected virtual void Dispose(bool disposing)
         {
