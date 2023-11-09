@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
 {
-    public class UserRepository : IUserRepository, IDisposable
+    public class UserRepository : IUserRepository
     {
         private bool _disposed = false;
         private readonly UsersDb _context;
@@ -24,9 +24,12 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
             await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             
 
-        public async Task AddUserAsync(User user) =>
-            await _context.AddAsync(user);
-
+        public async Task AddUserAsync(User user)
+        {
+            user.CreatedAt = DateTime.Now;
+            await _context.Users.AddAsync(user);
+        }
+           
 
         public async Task UpdateUserAsync(User user)
         {
@@ -55,24 +58,5 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();
 
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-                _disposed = true;
-            }
-        }
     }
 }

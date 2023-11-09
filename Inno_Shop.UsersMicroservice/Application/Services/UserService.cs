@@ -1,5 +1,6 @@
 ﻿using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Domain.Models;
+using Inno_Shop.UsersMicroservice.Infrastucture.Repositories;
 using Microsoft.AspNetCore.Identity;
 
 namespace Inno_Shop.UsersMicroservice.Application.Services
@@ -16,87 +17,36 @@ namespace Inno_Shop.UsersMicroservice.Application.Services
         }
 
 
-        Task<List<User>> GetAllUsersAsync()
-        {
+        public async Task<List<User>> GetAllUsersAsync() =>
+            await _userRepository.GetAllUsersAsync();
 
+
+
+        public async Task<User> GetUserAsync(int id) =>
+           await _userRepository.GetUserAsync(id);
+
+
+
+        public async Task AddUserAsync(User user)
+        {
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
+
+            await _userRepository.AddUserAsync(user);
+            await _userRepository.SaveAsync();
         }
 
 
-        Task<User> GetUserAsync(int id)
+        public async Task UpdateUserAsync(User user)
         {
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
 
+            await _userRepository.UpdateUserAsync(user);
+            await _userRepository.SaveAsync();
         }
 
 
-        Task AddUserAsync(User user)
-        {
+        public async Task DeleteUserAsync(int id) => 
+            await _userRepository.DeleteUserAsync(id);
 
-        }
-
-
-        Task UpdateUserAsync(User user)
-        {
-
-        }
-
-
-        Task DeleteUserAsync(int id)
-        {
-
-        }
-
-
-        Task SaveAsync()
-        {
-
-        }
-
-
-        Task<bool> IsEmailUniqueAsync(string email)
-        {
-
-        }
-
-
-        Task<bool> VerifyPasswordAsync(User user, string password)
-        {
-
-        }
-
-
-        Task<bool> ChangePasswordAsync(User user, string newPassword)
-        {
-
-        }
-
-
-        Task<bool> ResetPasswordAsync(User user, string newPassword)
-        {
-
-        }
-
-
-        Task<bool> ConfirmEmailAsync(User user, string token)
-        {
-
-        }
-
-
-        Task<bool> IsEmailConfirmedAsync(User user)
-        {
-
-        }
-
-
-        Task<string> GenerateEmailConfirmationTokenAsync(User user)
-        {
-
-        }
-
-
-        Task<string> GeneratePasswordResetTokenAsync(User user)
-        {
-
-        }
     }
 }
