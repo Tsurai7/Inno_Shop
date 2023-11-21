@@ -1,5 +1,6 @@
 ﻿using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Domain.Models;
+using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
 using Inno_Shop.UsersMicroservice.Infrastucture.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,16 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
 
         public async Task<User> GetUserAsync(int id) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            
+
+
+        public async Task<User> GetUserAsync(string email) =>
+            await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+        public User AuthUser(string email, string password) =>
+             _context.Users.FirstOrDefault(u =>
+            string.Equals(u.Email, email) &&
+            string.Equals(u.Password, password)) ??
+            throw new Exception();
 
         public async Task AddUserAsync(User user)
         {

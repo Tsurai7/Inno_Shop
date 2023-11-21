@@ -1,9 +1,9 @@
-﻿using Inno_Shop.UsersMicroservice.Domain.Interfaces;
+﻿using Inno_Shop.UsersMicroservice.Application.Services.UserService;
+using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Domain.Models;
-using Inno_Shop.UsersMicroservice.Infrastucture.Repositories;
 using Microsoft.AspNetCore.Identity;
 
-namespace Inno_Shop.UsersMicroservice.Application.Services
+namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
 {
     public class UserService : IUserService
     {
@@ -45,7 +45,7 @@ namespace Inno_Shop.UsersMicroservice.Application.Services
         }
 
 
-        public async Task DeleteUserAsync(int id) => 
+        public async Task DeleteUserAsync(int id) =>
             await _userRepository.DeleteUserAsync(id);
 
     }

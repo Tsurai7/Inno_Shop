@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
-    [Route("userapi/")]
+    [Route("api/users")]
     [ApiController]
-    public class UserAPIController : ControllerBase
+    public class UserController : ControllerBase
     {
         public readonly IUserRepository _repository;
 
-        public UserAPIController(IUserRepository repository)
+        public UserController(IUserRepository repository)
         {
             _repository = repository;
         }
