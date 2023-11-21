@@ -5,6 +5,7 @@ namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
     public interface IUserRepository
     {
         User AuthUser(string email, string password);
+        Task<User> GetUserAsync(string email);
         Task<List<User>> GetAllUsersAsync();
         Task<User> GetUserAsync(int id);
         Task AddUserAsync(User user);

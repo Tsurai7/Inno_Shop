@@ -25,6 +25,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
             _configuration = configuration;
         }
 
+
         [HttpPost("login")]
         [AllowAnonymous]
         public IActionResult login([FromBody] LoginRequestDto request)
@@ -49,5 +50,44 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 
             return Ok(new { Token = token });
         }
+
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public IActionResult Register([FromBody] RegisterRequestDto request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+            {
+                return BadRequest("Invalid request data");
+            }
+
+            // Проверяем, не существует ли уже пользователь с таким email
+            if (_userRepository.GetUserAsync(request.Email) != null)
+            {
+                return BadRequest("User with this email already exists");
+            }
+
+            // Создаем нового пользователя
+            var newUser = new User
+            {
+                Email = request.Email,
+                Password = request.Password,
+                // Добавьте другие свойства пользователя, если необходимо
+            };
+
+            // Сохраняем пользователя в репозитории
+            _userRepository.AddUserAsync(newUser);
+
+            // Теперь вы можете включить автоматическую аутентификацию пользователя после регистрации,
+            // создавая токен и отправляя его обратно клиенту
+
+            var token = _tokenService.BuildToken(
+                _configuration["Jwt:Key"],
+                _configuration["Jwt:Issuer"],
+                newUser);
+
+            return Ok(new { Token = token });
+        }
     }
+
 }
