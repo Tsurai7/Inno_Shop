@@ -1,4 +1,6 @@
-﻿using MailKit.Net.Smtp;
+﻿using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
+using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,18 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
     [Route("api/email")]
     public class EmailController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult SendEmail(string body)
-        {
+        private readonly IEmailService _emailService;
 
+        public EmailController(IEmailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+
+        [HttpPost]
+        public IActionResult SendEmail(EmailDto request)
+        {
+            _emailService.SendEmail(request);
 
             return Ok();
         }
