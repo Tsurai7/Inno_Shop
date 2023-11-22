@@ -88,5 +88,4 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
             return Ok(new { Token = token });
         }
     }
-
 }
