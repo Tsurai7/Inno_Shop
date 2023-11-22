@@ -24,9 +24,13 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
         public async Task<User> GetUserAsync(int id) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-
         public async Task<User> GetUserAsync(string email) =>
             await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+
+        public User IsEmailConfirmed(string token) =>
+            _context.Users.FirstOrDefault(u => u.EmailConfirmationToken == token);
+
 
         public User AuthUser(string email, string password) =>
              _context.Users.FirstOrDefault(u =>
@@ -34,12 +38,14 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
             string.Equals(u.Password, password)) ??
             throw new Exception();
 
+
         public async Task AddUserAsync(User user)
         {
             user.CreatedAt = DateTime.Now;
             await _context.Users.AddAsync(user);
         }
            
+
 
         public async Task UpdateUserAsync(User user)
         {
@@ -52,7 +58,6 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
             userFromDb.Email = user.Email;
             userFromDb.Password = user.Password;
         }
-
 
 
         public async Task DeleteUserAsync(int id)

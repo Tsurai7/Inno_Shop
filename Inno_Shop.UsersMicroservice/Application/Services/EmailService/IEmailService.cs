@@ -5,5 +5,7 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
     public interface IEmailService
     {
         void SendEmail(EmailDto email);
+
+        Task SendConfirmationEmailAsync(string email, string token);
     }
 }

@@ -7,6 +7,7 @@ using Inno_Shop.UsersMicroservice.Infrastucture.Repositories;
 using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
+using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
 
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
@@ -17,12 +18,15 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public AccountController(IUserRepository userRepository, ITokenService tokenService, IConfiguration configuration)
+        public AccountController(IUserRepository userRepository, ITokenService tokenService, 
+            IConfiguration configuration, IEmailService emailService)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
 
@@ -71,7 +75,8 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
                 Name = request.Name,
                 Email = request.Email,
                 Password = request.Password,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                EmailConfirmationToken = Guid.NewGuid().ToString()
             };
 
             _userRepository.AddUserAsync(newUser);
@@ -84,6 +89,8 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
                 _configuration["Jwt:Key"],
                 _configuration["Jwt:Issuer"],
                 newUser);
+
+            _emailService.SendConfirmationEmailAsync(request.Email, newUser.EmailConfirmationToken);
 
             return Ok(new { Token = token });
         }
