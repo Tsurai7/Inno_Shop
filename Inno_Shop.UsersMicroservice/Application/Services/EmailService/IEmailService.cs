@@ -1,4 +1,4 @@
-﻿using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
+﻿using Inno_Shop.Services.Users.Application.Dtos;
 
 namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
 {

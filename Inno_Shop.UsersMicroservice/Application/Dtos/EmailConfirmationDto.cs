@@ -1,4 +1,4 @@
-﻿namespace Inno_Shop.UsersMicroservice.Domain.Models.Dtos
+﻿namespace Inno_Shop.Services.Users.Application.Dtos
 {
     public class EmailConfirmationDto
     {

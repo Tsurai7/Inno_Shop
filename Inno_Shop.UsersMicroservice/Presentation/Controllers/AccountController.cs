@@ -1,28 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Inno_Shop.UsersMicroservice.Application.Services.TokenService;
-using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
 using System.Security.Cryptography;
 using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Inno_Shop.Services.Users.Domain.Models.Dtos;
+using Azure.Core;
+using Microsoft.Extensions.Configuration;
+using Inno_Shop.Services.Users.Application.Services.AuthService;
+using Org.BouncyCastle.Asn1.Cms;
+using Inno_Shop.Services.Users.Application.Dtos;
 
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/auth")]
+    [Route("api/account")]
     public class AccountController : ControllerBase
     {
         private readonly IUserRepository _repository;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
+        private readonly IAuthService _authService;
+
 
         public AccountController(IUserRepository repository, ITokenService tokenService, 
-            IEmailService emailService)
+            IEmailService emailService, IAuthService authService)
         {
             _repository = repository;
             _tokenService = tokenService;
             _emailService = emailService;
+            _authService = authService;
         }
 
 
@@ -33,21 +41,27 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
             var user = await _repository.GetUserByEmailAsync(request.Email);
 
             if (user == null)
-            {
-                return BadRequest("User not found");
-            }
+                return BadRequest("Bad credentials");
+            
 
-            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
-            {
-                return BadRequest("Password is incorrect.");
-            }
+            if (!_authService.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+                return BadRequest("Bad credentials");
+            
 
             if (user.VerifiedAt == null)
-            {
-                return BadRequest("User not verified");
-            }
+                return BadRequest("Bad credentials");
+            
 
-            return Ok("Welcome back");
+            var accessToken = _tokenService.BuildToken(user.Name);
+            var refreshToken = _tokenService.BuildToken(user.Name);
+
+            return Ok(new AuthResponseDto
+            {
+                Username = user.Name,
+                Email = user.Email,
+                Token = accessToken,
+                RefreshToken = refreshToken
+            });
         }
 
 
@@ -56,58 +70,43 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
             if(await _repository.GetUserByEmailAsync(request.Email) != null)
-            {
                 return BadRequest("User already exists");
-            }
+            
 
-            CreatePasswordHash(request.Password,
+            _authService.CreatePasswordHash(request.Password,
                 out byte[] passwordHash,
                 out byte[] passwordSalt);
 
-            var token = _tokenService.BuildToken(request.Name);
+            var accessToken = _tokenService.BuildToken(request.Name);
 
             var user = new User
             {
+                Name = request.Name,
                 Email = request.Email,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                VerificationToken = token,
+                VerificationToken = accessToken,
                 CreatedAt = DateTime.Now
             };
 
             await _repository.AddUserAsync(user);
             await _repository.SaveAsync();
 
-            await _emailService.SendConfirmationEmailAsync(request.Email, token);
+            await _emailService.SendConfirmationEmailAsync(request.Email, accessToken);
 
-            return Ok(user);
-        }
-
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
+            return Ok(new AuthResponseDto
             {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac
-                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
+                Username = request.Name,
+                Email = request.Email,
+                Token = accessToken,
+                RefreshToken = string.Empty
+            });
         }
 
 
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac
-                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
-
-
-        [HttpGet("confirm")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] string token)
+        [AllowAnonymous]
+        [HttpGet("verify")]
+        public async Task<IActionResult> Verify([FromQuery] string token)
         {
             var user = await _repository.GetUserByTokenAsync(token);
 

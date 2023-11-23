@@ -1,3 +1,4 @@
+using Inno_Shop.Services.Users.Application.Services.AuthService;
 using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
 using Inno_Shop.UsersMicroservice.Application.Services.TokenService;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
@@ -37,6 +38,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

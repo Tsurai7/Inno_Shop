@@ -1,9 +1,8 @@
-﻿using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
-using MailKit.Security;
+﻿using MailKit.Security;
 using MimeKit.Text;
 using MimeKit;
 using MailKit.Net.Smtp;
-
+using Inno_Shop.Services.Users.Application.Dtos;
 
 namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
 {
@@ -44,7 +43,7 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
             message.To.Add(MailboxAddress.Parse(email));
             message.Subject = "Confirmation email";
             message.Body = new TextPart(TextFormat.Html) { Text =
-                $"<a href='{$"https://localhost:7281/api/emai/confirm?token={token}"}'>Click here to confirm your email</a>" };
+                $"<a href='{$"https://localhost:7281/api/email/verify?token={token}"}'>Click here to confirm your email</a>" };
 
             using var smtp = new SmtpClient();
 
