@@ -66,7 +66,7 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
             message.Body = new TextPart(TextFormat.Html)
             {
                 Text =
-                $"<a href='{$"https://localhost:7281/api/emai/confirm?token={email}"}'>Click here to confirm your email</a>"
+                $"<a href='{$"https://localhost:7281/api/auth/confirm?token={email}"}'>Click here to confirm your email</a>"
             };
 
             using var smtp = new SmtpClient();

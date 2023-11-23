@@ -33,6 +33,9 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Repositories
             await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
 
+        public async Task<User> GetUserByTokenAsync(string token) =>
+            await _context.Users.FirstOrDefaultAsync(u => u.VerificationToken == token);
+
 
         public async Task AddUserAsync(User user)
         {

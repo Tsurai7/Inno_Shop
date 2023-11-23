@@ -8,6 +8,7 @@ namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByNameAsync(string name);
         Task<User> GetUserByEmailAsync(string email);
+        Task<User> GetUserByTokenAsync(string token);
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);

@@ -55,7 +55,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            if(_repository.GetUserByEmailAsync(request.Email) != null)
+            if(await _repository.GetUserByEmailAsync(request.Email) != null)
             {
                 return BadRequest("User already exists");
             }
@@ -75,25 +75,22 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
                 CreatedAt = DateTime.Now
             };
 
-            _repository.AddUserAsync(user);
-            _repository.SaveAsync();
+            await _repository.AddUserAsync(user);
+            await _repository.SaveAsync();
+
+            await _emailService.SendConfirmationEmailAsync(request.Email, token);
 
             return Ok(user);
         }
 
-
-        //[HttpPost("verify")]
-        //public async Task<IActionResult> Verify(string token)
-        //{
-
-        //}
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac
+                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
 
@@ -109,31 +106,20 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         }
 
 
+        [HttpGet("confirm")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string token)
+        {
+            var user = await _repository.GetUserByTokenAsync(token);
 
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
 
+            user.VerifiedAt = DateTime.Now;
+            await _repository.SaveAsync();
 
-
-
-
-
-
-
-
-
-
-
-        //[AllowAnonymous]
-        //[HttpPost("forgot-password")]
-        //public async IActionResult ForgotPassword(string email)
-        //{
-        //    var user = await _userRepository.GetUserAsync(email);
-
-        //    if (user == null)
-        //    {
-        //        return BadRequest("User not found");
-        //    }
-
-        //    user.Password
-        //}
+            return Ok("Email confirmed successfully.");
+        }
     }
 }

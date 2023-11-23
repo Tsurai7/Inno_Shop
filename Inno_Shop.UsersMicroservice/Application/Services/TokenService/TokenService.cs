@@ -25,10 +25,10 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.TokenService
                 new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
             };
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Jwt:Key"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey,
                 SecurityAlgorithms.HmacSha256Signature);
-            var tokenDescriptor = new JwtSecurityToken("Jwt:Issuer", "Jwt:Issuer", claims,
+            var tokenDescriptor = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Issuer"], claims,
                 expires: DateTime.Now.Add(ExpiryDuration), signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
