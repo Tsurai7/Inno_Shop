@@ -1,9 +1,12 @@
-﻿namespace Inno_Shop.UsersMicroservice.Domain.Models.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Inno_Shop.UsersMicroservice.Domain.Models.Dtos
 {
     public class LoginRequestDto
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+        [Required]
+        public string Password { get; set; } = string.Empty;
     }
-
 }

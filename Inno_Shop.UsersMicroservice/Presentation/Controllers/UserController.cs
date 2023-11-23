@@ -1,7 +1,5 @@
-﻿using Inno_Shop.UsersMicroservice.Application.Services;
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
-using Inno_Shop.UsersMicroservice.Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
@@ -29,7 +27,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var user = await _repository.GetUserAsync(id);
+            var user = await _repository.GetUserByIdAsync(id);
 
             if (user == null)
                 return NotFound();
@@ -59,14 +57,13 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         {
             try
             {
-                var userFormDb = await _repository.GetUserAsync(user.Id);
+                var userFormDb = await _repository.GetUserByNameAsync(user.Name);
 
                 if (userFormDb == null)
                     return NotFound(user.Id);
 
                 userFormDb.Name = user.Name;
                 userFormDb.Email = user.Email;
-                userFormDb.Password = user.Password;
                 await _repository.SaveAsync();
                 return NoContent();
 
@@ -81,13 +78,14 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await _repository.GetUserAsync(id);
+            var user = await _repository.GetUserByIdAsync(id);
 
             if (user == null)
                 return NotFound();
 
             await _repository.DeleteUserAsync(id);
             await _repository.SaveAsync();
+
             return NoContent();
         }
     }

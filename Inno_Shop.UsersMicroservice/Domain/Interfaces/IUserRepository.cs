@@ -1,14 +1,13 @@
-﻿using Inno_Shop.UsersMicroservice.Domain.Models;
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
 
 namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        User AuthUser(string email, string password);
-        User IsEmailConfirmed(string token);
-        Task<User> GetUserAsync(string email);
         Task<List<User>> GetAllUsersAsync();
-        Task<User> GetUserAsync(int id);
+        Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByNameAsync(string name);
+        Task<User> GetUserByEmailAsync(string email);
         Task AddUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);

@@ -1,4 +1,5 @@
-﻿using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
+﻿using Inno_Shop.Services.Users.Domain.Models.Dtos;
+using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
 using Microsoft.AspNetCore.Identity;
@@ -23,28 +24,37 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 
 
         [HttpPost("send")]
-        public IActionResult SendEmail(EmailDto request)
+        public IActionResult SendEmail(EmailConfirmationDto request)
         {
             _emailService.SendEmail(request);
 
             return Ok();
         }
 
+
         [HttpGet("confirm")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string token)
         {
-            var user = _userRepository.IsEmailConfirmed(token);
+            //var user = _userRepository.IsEmailConfirmed(token);
 
-            if (user == null)
-            {
-                return BadRequest(new { Message = "Invalid token." });
-            }
+            //if (user == null)
+            //{
+            //    return BadRequest(new { Message = "Invalid token." });
+            //}
 
-            user.IsEmailConfirmed = true;
-            user.EmailConfirmationToken = null;
-            await _userRepository.SaveAsync();
+            //user.IsEmailConfirmed = true;
+            //user.EmailConfirmationToken = null;
+            //await _userRepository.SaveAsync();
 
             return Ok(new { Message = "Email confirmed successfully." });
+        }
+
+
+        [HttpPost("recovery")]
+        public async Task<IActionResult> RecoverPassword([FromBody] PasswordRecoveryRequestDto request)
+        {
+            return Ok();
+
         }
     }
 }

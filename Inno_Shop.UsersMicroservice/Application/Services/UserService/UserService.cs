@@ -1,6 +1,6 @@
-﻿using Inno_Shop.UsersMicroservice.Application.Services.UserService;
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Inno_Shop.UsersMicroservice.Application.Services.UserService;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
-using Inno_Shop.UsersMicroservice.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
@@ -23,13 +23,13 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
 
 
         public async Task<User> GetUserAsync(int id) =>
-           await _userRepository.GetUserAsync(id);
+           await _userRepository.GetUserByIdAsync(id);
 
 
 
         public async Task AddUserAsync(User user)
         {
-            user.Password = _passwordHasher.HashPassword(user, user.Password);
+            //user.Password = _passwordHasher.HashPassword(user, user.Password);
 
             await _userRepository.AddUserAsync(user);
             await _userRepository.SaveAsync();
@@ -38,7 +38,7 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
 
         public async Task UpdateUserAsync(User user)
         {
-            user.Password = _passwordHasher.HashPassword(user, user.Password);
+            //user.Password = _passwordHasher.HashPassword(user, user.Password);
 
             await _userRepository.UpdateUserAsync(user);
             await _userRepository.SaveAsync();

@@ -4,16 +4,13 @@ using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Infrastucture.Data;
 using Inno_Shop.UsersMicroservice.Infrastucture.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<UsersDb>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("UsersDb"));
-});
+builder.Services.AddDbContext<UsersDbContext>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

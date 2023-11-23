@@ -1,4 +1,4 @@
-﻿using Inno_Shop.UsersMicroservice.Domain.Models;
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
 
 namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
 {

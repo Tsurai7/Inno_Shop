@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Inno_Shop.UsersMicroservice.Application.Services.TokenService;
-using Inno_Shop.UsersMicroservice.Application.Services.UserService;
-using Inno_Shop.UsersMicroservice.Domain.Models;
-using Inno_Shop.UsersMicroservice.Infrastucture.Repositories;
 using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
 using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
+using System.Security.Cryptography;
+using Inno_Shop.Services.Users.Domain.Models.Entities;
 
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
@@ -15,84 +13,127 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
     [Route("api/auth")]
     public class AccountController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _repository;
         private readonly ITokenService _tokenService;
-        private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
 
-        public AccountController(IUserRepository userRepository, ITokenService tokenService, 
-            IConfiguration configuration, IEmailService emailService)
+        public AccountController(IUserRepository repository, ITokenService tokenService, 
+            IEmailService emailService)
         {
-            _userRepository = userRepository;
+            _repository = repository;
             _tokenService = tokenService;
-            _configuration = configuration;
             _emailService = emailService;
         }
 
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult login([FromBody] LoginRequestDto request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
+            var user = await _repository.GetUserByEmailAsync(request.Email);
 
-            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+            if (user == null)
             {
-                return BadRequest("Invalid request data");
+                return BadRequest("User not found");
             }
 
-            var userDto = _userRepository.AuthUser(request.Email, request.Password);
-
-            if (userDto == null)
+            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
-                return Unauthorized();
+                return BadRequest("Password is incorrect.");
             }
 
-            var token = _tokenService.BuildToken(
-                _configuration["Jwt:Key"],
-                _configuration["Jwt:Issuer"],
-                userDto);
+            if (user.VerifiedAt == null)
+            {
+                return BadRequest("User not verified");
+            }
 
-            return Ok(new { Token = token });
+            return Ok("Welcome back");
         }
 
-       
+
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequestDto request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+            if(_repository.GetUserByEmailAsync(request.Email) != null)
             {
-                return BadRequest("Invalid request data");
+                return BadRequest("User already exists");
             }
 
-            if (_userRepository.GetUserAsync(request.Email) == null)
-            {
-                return BadRequest("User with this email already exists");
-            }
+            CreatePasswordHash(request.Password,
+                out byte[] passwordHash,
+                out byte[] passwordSalt);
 
-            var newUser = new User
+            var token = _tokenService.BuildToken(request.Name);
+
+            var user = new User
             {
-                Name = request.Name,
                 Email = request.Email,
-                Password = request.Password,
-                CreatedAt = DateTime.UtcNow,
-                EmailConfirmationToken = Guid.NewGuid().ToString()
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                VerificationToken = token,
+                CreatedAt = DateTime.Now
             };
 
-            _userRepository.AddUserAsync(newUser);
-            _userRepository.SaveAsync();
+            _repository.AddUserAsync(user);
+            _repository.SaveAsync();
 
-            // Теперь вы можете включить автоматическую аутентификацию пользователя после регистрации,
-            // создавая токен и отправляя его обратно клиенту
-
-            var token = _tokenService.BuildToken(
-                _configuration["Jwt:Key"],
-                _configuration["Jwt:Issuer"],
-                newUser);
-
-            _emailService.SendConfirmationEmailAsync(request.Email, newUser.EmailConfirmationToken);
-
-            return Ok(new { Token = token });
+            return Ok(user);
         }
+
+
+        //[HttpPost("verify")]
+        //public async Task<IActionResult> Verify(string token)
+        //{
+
+        //}
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac
+                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(passwordHash);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //[AllowAnonymous]
+        //[HttpPost("forgot-password")]
+        //public async IActionResult ForgotPassword(string email)
+        //{
+        //    var user = await _userRepository.GetUserAsync(email);
+
+        //    if (user == null)
+        //    {
+        //        return BadRequest("User not found");
+        //    }
+
+        //    user.Password
+        //}
     }
 }
