@@ -1,4 +1,4 @@
-namespace Inno_shop.ProductsMicroservice
+namespace Inno_Shop.ProductsMicroservice
 {
     public class WeatherForecast
     {

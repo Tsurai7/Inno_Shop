@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inno_shop.ProductsMicroservice.Controllers
+namespace Inno_Shop.ProductsMicroservice.Controllers
 {
     [ApiController]
     [Route("[controller]")]
