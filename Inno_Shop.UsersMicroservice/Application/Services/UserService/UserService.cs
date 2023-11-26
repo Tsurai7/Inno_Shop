@@ -1,0 +1,52 @@
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Inno_Shop.UsersMicroservice.Application.Services.UserService;
+using Inno_Shop.UsersMicroservice.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
+
+namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
+{
+    public class UserService : IUserService
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly IPasswordHasher<User> _passwordHasher;
+
+        public UserService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
+        {
+            _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
+        }
+
+
+        public async Task<List<User>> GetAllUsersAsync() =>
+            await _userRepository.GetAllUsersAsync();
+
+
+
+        public async Task<User> GetUserAsync(int id) =>
+           await _userRepository.GetUserByIdAsync(id);
+
+
+
+        public async Task AddUserAsync(User user)
+        {
+            //user.Password = _passwordHasher.HashPassword(user, user.Password);
+
+            await _userRepository.AddUserAsync(user);
+            await _userRepository.SaveAsync();
+        }
+
+
+        public async Task UpdateUserAsync(User user)
+        {
+            //user.Password = _passwordHasher.HashPassword(user, user.Password);
+
+            await _userRepository.UpdateUserAsync(user);
+            await _userRepository.SaveAsync();
+        }
+
+
+        public async Task DeleteUserAsync(int id) =>
+            await _userRepository.DeleteUserAsync(id);
+
+    }
+}
