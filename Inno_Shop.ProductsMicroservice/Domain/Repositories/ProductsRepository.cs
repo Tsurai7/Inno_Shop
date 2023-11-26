@@ -1,6 +1,6 @@
 ﻿namespace Inno_Shop.Services.Products.Domain.Repositories
 {
-    public class ProductsRepository : IRepository<Product>, IDisposable
+    public class ProductsRepository : IRepository<Product>
     {
         private bool _disposed = false;
         private readonly ProductsDbContext _context;
@@ -44,7 +44,7 @@
         }
 
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(long id)
         {
             var productFromDb = await _context.Products.FindAsync(new object[] { id });
 

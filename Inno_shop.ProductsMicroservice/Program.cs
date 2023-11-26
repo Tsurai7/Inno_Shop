@@ -1,4 +1,6 @@
 
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ProductsDbContext>();
+builder.Services.AddDbContext<ProductsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ProductsDbContext")));
+
+builder.Services.AddScoped<IRepository<Product>, ProductsRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

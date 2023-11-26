@@ -1,6 +1,5 @@
 ﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
 using Inno_Shop.UsersMicroservice.Domain.Interfaces;
-using Inno_Shop.UsersMicroservice.Domain.Models.Dtos;
 using Inno_Shop.UsersMicroservice.Infrastucture.Data;
 using Microsoft.EntityFrameworkCore;
 
