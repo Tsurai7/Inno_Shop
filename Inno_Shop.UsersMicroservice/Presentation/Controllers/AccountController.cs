@@ -1,18 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Inno_Shop.UsersMicroservice.Application.Services.TokenService;
-using Microsoft.AspNetCore.Authorization;
-using Inno_Shop.UsersMicroservice.Domain.Interfaces;
-using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
-using System.Security.Cryptography;
-using Inno_Shop.Services.Users.Domain.Models.Entities;
-using Inno_Shop.Services.Users.Domain.Models.Dtos;
-using Azure.Core;
-using Microsoft.Extensions.Configuration;
-using Inno_Shop.Services.Users.Application.Services.AuthService;
-using Org.BouncyCastle.Asn1.Cms;
-using Inno_Shop.Services.Users.Application.Dtos;
-
-namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
+﻿namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
     [ApiController]
     [Route("api/account")]

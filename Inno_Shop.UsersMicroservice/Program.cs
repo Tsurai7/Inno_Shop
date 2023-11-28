@@ -1,13 +1,3 @@
-using Inno_Shop.Services.Users.Application.Services.AuthService;
-using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
-using Inno_Shop.UsersMicroservice.Application.Services.TokenService;
-using Inno_Shop.UsersMicroservice.Domain.Interfaces;
-using Inno_Shop.UsersMicroservice.Infrastucture.Data;
-using Inno_Shop.UsersMicroservice.Infrastucture.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UsersDbContext>();
