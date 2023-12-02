@@ -1,17 +1,17 @@
 ﻿
 
+using Inno_Shop.Services.Products.Presentation.Validators;
+
 namespace Inno_Shop.Services.Products.Presentation.Controllers
 {
     [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IRepository<Product> _repository;
         private readonly IProductService _productService;
 
         public ProductsController(IRepository<Product> repository, IProductService productService)
         {
-            _repository = repository;
             _productService = productService;
         }
 
@@ -19,7 +19,7 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _repository.GetAllAsync();
+            var products = await _productService.GetAllAsync();
             return Ok(products);
         }
 
@@ -27,7 +27,7 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var product = await _repository.GetByIdAsync(id);
+            var product = await _productService.GetByIdAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -39,10 +39,15 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Product product)
         {
+            var validator = new ProductValidator();
+            var validationResult = await validator.ValidateAsync(product);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
             try
             {
-                await _repository.AddAsync(product);
-                await _repository.SaveAsync();
+                await _productService.AddAsync(product);
                 return CreatedAtAction(nameof(Create), new { id = product.Id }, product);
             }
             catch (Exception ex)
@@ -55,9 +60,15 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Product product)
         {
+            var validator = new ProductValidator();
+            var validationResult = await validator.ValidateAsync(product);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
             try
             {
-                var productFromDb = await _repository.GetByTitleAsync(product.Title);
+                var productFromDb = await _productService.GetByTitleAsync(product.Title);
 
                 if (productFromDb == null)
                     return NotFound(product.Id);
@@ -67,7 +78,6 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
                 productFromDb.Price = product.Price; 
                 productFromDb.IsAvaiable = product.IsAvaiable;
                 productFromDb.UpdatedAt = DateTime.UtcNow;
-                await _repository.SaveAsync();
                 return NoContent();
 
             }
@@ -81,13 +91,12 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await _repository.GetByIdAsync(id);
+            var product = await _productService.GetByIdAsync(id);
 
-            if (user == null)
+            if (product == null)
                 return NotFound();
 
-            await _repository.DeleteAsync(id);
-            await _repository.SaveAsync();
+            await _productService.DeleteAsync(id);
 
             return NoContent();
         }
@@ -98,11 +107,19 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductFilterDto filterParameters)
         {
+            var validator = new ProductFilterDtoValidator();
+            var validationResult = await validator.ValidateAsync(filterParameters);
+
+            if (!validationResult.IsValid)            
+                return BadRequest(validationResult.Errors);
+            
+
             try
             {
                 var filteredProducts = await _productService.GetFilteredAsync(filterParameters);
                 return Ok(filteredProducts);
             }
+
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);

@@ -12,7 +12,7 @@
                 .MaximumLength(500).WithMessage("Description cannot be longer than 500 characters");
 
             RuleFor(product => product.Price)
-                .GreaterThanOrEqualTo(0).WithMessage("Price should be greater than or equal to 0");
+                .GreaterThan(0).WithMessage("Price should be greater 0");
 
             RuleFor(product => product.IsAvaiable)
                 .NotNull().WithMessage("Availability is required");

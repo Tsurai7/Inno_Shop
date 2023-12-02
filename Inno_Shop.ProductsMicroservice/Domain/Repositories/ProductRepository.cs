@@ -27,6 +27,7 @@
         {
             product.CreatedAt = DateTime.Now;
             await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -41,6 +42,8 @@
             productFromDb.Description = product.Description;
             productFromDb.Price = product.Price;
             productFromDb.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
         }
 
 
@@ -52,6 +55,7 @@
                 return;
 
             _context.Remove(productFromDb);
+            await _context.SaveChangesAsync();
         }
 
 

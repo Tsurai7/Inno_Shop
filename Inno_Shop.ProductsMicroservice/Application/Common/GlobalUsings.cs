@@ -2,6 +2,7 @@
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Mvc;
 global using FluentValidation;
+global using Swashbuckle.AspNetCore.Annotations;
 
 
 global using Inno_Shop.Services.Products.Domain.Models;
