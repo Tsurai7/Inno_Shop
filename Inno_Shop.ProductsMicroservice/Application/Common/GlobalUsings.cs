@@ -1,6 +1,7 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Mvc;
+global using FluentValidation;
 
 
 global using Inno_Shop.Services.Products.Domain.Models;

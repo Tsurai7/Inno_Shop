@@ -92,10 +92,11 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
             return NoContent();
         }
 
+
         [HttpGet("filter")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductFilterParameters filterParameters)
+        public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductFilterDto filterParameters)
         {
             try
             {

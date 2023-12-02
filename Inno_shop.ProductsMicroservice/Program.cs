@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProductsDbContext")));
 
-builder.Services.AddScoped<IRepository<Product>, ProductsRepository>();
+builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();

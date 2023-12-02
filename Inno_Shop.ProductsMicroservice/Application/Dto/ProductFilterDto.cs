@@ -1,8 +1,8 @@
 ﻿namespace Inno_Shop.Services.Products.Application.Dto
 {
-    public class ProductFilterParameters
+    public class ProductFilterDto
     {
-        public string Title { get; set; } = string.Empty;
+        public string? Title { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
         public bool? IsAvaiable { get; set; }

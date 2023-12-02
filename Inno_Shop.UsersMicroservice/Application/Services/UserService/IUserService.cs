@@ -1,6 +1,4 @@
-﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
-
-namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
+﻿namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
 {
     public interface IUserService
     {

@@ -9,6 +9,6 @@
         Task UpdateAsync(Product product);
         Task DeleteAsync(long id);
 
-        Task<List<Product>> GetFilteredAsync(ProductFilterParameters filterParameters);
+        Task<List<Product>> GetFilteredAsync(ProductFilterDto filterParameters);
     }    
 }

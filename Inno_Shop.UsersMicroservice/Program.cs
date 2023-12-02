@@ -1,3 +1,5 @@
+using Inno_Shop.Services.Users.Domain.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UsersDbContext>();

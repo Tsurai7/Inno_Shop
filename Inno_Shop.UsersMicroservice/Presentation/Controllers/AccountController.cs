@@ -4,7 +4,7 @@
     [Route("api/account")]
     public class AccountController : ControllerBase
     {
-        private readonly IUserRepository _repository;
+        private readonly IRepository<User> _repository;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
         private readonly IAuthService _authService;

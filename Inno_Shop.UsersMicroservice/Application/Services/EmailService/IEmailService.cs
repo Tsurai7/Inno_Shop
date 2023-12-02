@@ -1,6 +1,4 @@
-﻿using Inno_Shop.Services.Users.Application.Dtos;
-
-namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
+﻿namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
 {
     public interface IEmailService
     {

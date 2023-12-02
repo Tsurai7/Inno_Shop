@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Inno_Shop.Services.Users.Domain.Models.Entities
+﻿namespace Inno_Shop.Services.Users.Domain.Models.Entities
 {
     public class User
     {

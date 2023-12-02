@@ -1,11 +1,11 @@
 ﻿namespace Inno_Shop.Services.Products.Domain.Repositories
 {
-    public class ProductsRepository : IRepository<Product>
+    public class ProductRepository : IRepository<Product>
     {
         private bool _disposed = false;
         private readonly ProductsDbContext _context;
 
-        public ProductsRepository(ProductsDbContext context)
+        public ProductRepository(ProductsDbContext context)
         {
             _context = context;
         }

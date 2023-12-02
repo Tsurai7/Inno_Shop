@@ -10,11 +10,5 @@
             Database.EnsureCreated();
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    optionsBuilder
-        //        .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=products;Trusted_Connection=True;");
-        //}
     }
 }

@@ -1,9 +1,4 @@
-﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
-using Inno_Shop.UsersMicroservice.Application.Services.UserService;
-using Inno_Shop.UsersMicroservice.Domain.Interfaces;
-using Microsoft.AspNetCore.Identity;
-
-namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
+﻿namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
 {
     public class UserService : IUserService
     {
