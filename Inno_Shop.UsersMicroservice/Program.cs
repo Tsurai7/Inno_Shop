@@ -1,12 +1,9 @@
-using Inno_Shop.Services.Users.Domain.Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UsersDbContext>();
 
-
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

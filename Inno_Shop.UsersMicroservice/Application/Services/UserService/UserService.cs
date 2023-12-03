@@ -3,45 +3,47 @@
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
         }
 
 
-        public async Task<List<User>> GetAllUsersAsync() =>
-            await _userRepository.GetAllUsersAsync();
+        public async Task<List<User>> GetAllAsync() =>
+            await _userRepository.GetAllAsync();
 
 
+        public async Task<User> GetByIdAsync(long id) =>
+           await _userRepository.GetByIdAsync(id);
 
-        public async Task<User> GetUserAsync(int id) =>
-           await _userRepository.GetUserByIdAsync(id);
+        public async Task<User> GetByEmailAsync(string email) =>
+            await _userRepository.GetByEmailAsync(email);
+
+        public async Task<User> GetByTokenAsync(string token) =>
+            await _userRepository.GetByTokenAsync(token);
 
 
-
-        public async Task AddUserAsync(User user)
+        public async Task AddAsync(User user)
         {
             //user.Password = _passwordHasher.HashPassword(user, user.Password);
 
-            await _userRepository.AddUserAsync(user);
+            await _userRepository.AddAsync(user);
             await _userRepository.SaveAsync();
         }
 
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateAsync(User user)
         {
             //user.Password = _passwordHasher.HashPassword(user, user.Password);
 
-            await _userRepository.UpdateUserAsync(user);
+            await _userRepository.UpdateAsync(user);
             await _userRepository.SaveAsync();
         }
 
 
-        public async Task DeleteUserAsync(int id) =>
-            await _userRepository.DeleteUserAsync(id);
+        public async Task DeleteAsync(long id) =>
+            await _userRepository.DeleteAsync(id);
 
     }
 }

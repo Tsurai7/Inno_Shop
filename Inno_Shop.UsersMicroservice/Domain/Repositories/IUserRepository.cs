@@ -1,6 +1,6 @@
-﻿namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
+﻿namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
 {
-    public interface IUserService
+    public interface IUserRepository : IDisposable 
     {
         Task<List<User>> GetAllAsync();
         Task<User> GetByIdAsync(long id);
@@ -9,5 +9,6 @@
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(long id);
+        Task SaveAsync();
     }
 }

@@ -4,16 +4,16 @@
     [Route("api/account")]
     public class AccountController : ControllerBase
     {
-        private readonly IRepository<User> _repository;
+        private readonly IUserService  _userService;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
         private readonly IAuthService _authService;
 
 
-        public AccountController(IUserRepository repository, ITokenService tokenService, 
+        public AccountController(IUserService userService, ITokenService tokenService, 
             IEmailService emailService, IAuthService authService)
         {
-            _repository = repository;
+            _userService = userService;
             _tokenService = tokenService;
             _emailService = emailService;
             _authService = authService;
@@ -24,7 +24,7 @@
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
-            var user = await _repository.GetUserByEmailAsync(request.Email);
+            var user = await _userService.GetByEmailAsync(request.Email);
 
             if (user == null)
                 return BadRequest("Bad credentials");
@@ -55,7 +55,7 @@
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            if(await _repository.GetUserByEmailAsync(request.Email) != null)
+            if(await _userService.GetByEmailAsync(request.Email) != null)
                 return BadRequest("User already exists");
             
 
@@ -75,8 +75,7 @@
                 CreatedAt = DateTime.Now
             };
 
-            await _repository.AddUserAsync(user);
-            await _repository.SaveAsync();
+            await _userService.AddAsync(user);
 
             await _emailService.SendConfirmationEmailAsync(request.Email, accessToken);
 
@@ -94,7 +93,7 @@
         [HttpGet("verify")]
         public async Task<IActionResult> Verify([FromQuery] string token)
         {
-            var user = await _repository.GetUserByTokenAsync(token);
+            var user = await _userService.GetByTokenAsync(token);
 
             if (user == null)
             {
@@ -102,7 +101,6 @@
             }
 
             user.VerifiedAt = DateTime.Now;
-            await _repository.SaveAsync();
 
             return Ok("Email confirmed successfully.");
         }

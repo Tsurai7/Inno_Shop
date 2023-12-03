@@ -1,6 +1,6 @@
 ﻿namespace Inno_Shop.Services.Users.Domain.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IUserRepository
     {
         private bool _disposed = false;
         private readonly UsersDbContext _context;
@@ -22,7 +22,7 @@
             await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
 
-        public async Task<User> GetByToken(string token) =>
+        public async Task<User> GetByTokenAsync(string token) =>
             await _context.Users.FirstOrDefaultAsync(u => u.VerificationToken == token);
 
 

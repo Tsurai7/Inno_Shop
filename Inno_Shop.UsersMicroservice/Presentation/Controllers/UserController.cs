@@ -4,26 +4,26 @@
     [ApiController]
     public class UserController : ControllerBase
     {
-        public readonly IUserRepository _repository;
+        public readonly IUserService _userService;
 
-        public UserController(IUserRepository repository)
+        public UserController(IUserService userService)
         {
-            _repository = repository;
+            _userService = userService;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _repository.GetAllUsersAsync();
+            var users = await _userService.GetAllAsync();
             return Ok(users);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(long id)
         {
-            var user = await _repository.GetUserByIdAsync(id);
+            var user = await _userService.GetByIdAsync(id);
 
             if (user == null)
                 return NotFound();
@@ -37,8 +37,7 @@
         {
             try
             {
-                await _repository.AddUserAsync(user);
-                await _repository.SaveAsync();
+                await _userService.AddAsync(user);
                 return CreatedAtAction(nameof(Create), new { id = user.Id }, user);
             }
             catch (Exception ex)
@@ -53,14 +52,13 @@
         {
             try
             {
-                var userFormDb = await _repository.GetUserByNameAsync(user.Name);
+                var userFormDb = await _userService.GetByIdAsync(user.Id);
 
                 if (userFormDb == null)
                     return NotFound(user.Id);
 
                 userFormDb.Name = user.Name;
                 userFormDb.Email = user.Email;
-                await _repository.SaveAsync();
                 return NoContent();
 
             }
@@ -72,15 +70,14 @@
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var user = await _repository.GetUserByIdAsync(id);
+            var user = await _userService.GetByIdAsync(id);
 
             if (user == null)
                 return NotFound();
 
-            await _repository.DeleteUserAsync(id);
-            await _repository.SaveAsync();
+            await _userService.DeleteAsync(id);
 
             return NoContent();
         }
