@@ -29,7 +29,7 @@ namespace Inno_Shop.Services.Products.Application.Products.Commands.UpdateProduc
             entity.Title = command.Title;
             entity.Description = command.Description;
             entity.Price = command.Price;
-            entity.IsAvaiable = command.IsAvaiable;
+            entity.IsAvaiable = command.IsAvailable;
             entity.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync(cancellationToken);
