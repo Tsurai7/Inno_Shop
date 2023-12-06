@@ -4,6 +4,7 @@ using Inno_Shop.Services.Products.Application.Products.Commands.CreateProduct;
 using Inno_Shop.Services.Products.Application.Products.Commands.DeleteProduct;
 using Inno_Shop.Services.Products.Application.Products.Queries.GetProductDetails;
 using Inno_Shop.Services.Products.Application.Products.Queries.GetProductList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inno_Shop.Services.Products.Presentation.Controllers
@@ -29,7 +30,6 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
             return Ok(vm);
         }
 
-         
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDetailsVm>> GetById(long id)
         {

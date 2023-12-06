@@ -6,6 +6,7 @@ using Inno_Shop.Services.Products.Application.Products.Commands.DeleteProduct;
 using Inno_Shop.Services.Products.Application.Products.Commands.UpdateProduct;
 using Inno_Shop.Services.Products.Application.Products.Queries.GetProductDetails;
 using Inno_Shop.Services.Products.Application.Products.Queries.GetProductList;
+using Inno_Shop.Services.Products.Presentation.Middleware;
 using Inno_Shop.Services.Products.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,8 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>),
 
 var app = builder.Build();
 
+app.UseCustomExceptions();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -63,7 +66,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

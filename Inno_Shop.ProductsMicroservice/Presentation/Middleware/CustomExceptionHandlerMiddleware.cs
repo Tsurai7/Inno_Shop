@@ -1,16 +1,16 @@
-﻿using System.Net;
+﻿using Inno_Shop.Services.Products.Application.Common.Exceptions;
+using System.Net;
 using System.Text.Json;
 
 namespace Inno_Shop.Services.Products.Presentation.Middleware
 {
-    public class CustomExceptionsMiddleware
+    public class CustomExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public CustomExceptionsMiddleware(RequestDelegate next)
-        {
+        public CustomExceptionHandlerMiddleware(RequestDelegate next) =>
             _next = next;
-        }
+        
 
         public async Task Invoke(HttpContext context)
         {
@@ -26,7 +26,7 @@ namespace Inno_Shop.Services.Products.Presentation.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var code = HttpStatusCode.BadRequest;
+            var code = HttpStatusCode.InternalServerError;
 
             var result = string.Empty;
 
@@ -36,13 +36,16 @@ namespace Inno_Shop.Services.Products.Presentation.Middleware
                     code = HttpStatusCode.BadRequest;
                     result = JsonSerializer.Serialize(validationException.Errors);
                     break;
+                case NotFoundException:
+                    code = HttpStatusCode.NotFound;
+                    break;
             }
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
 
-            if (result == null)
+            if (result == string.Empty)
             {
-                result = JsonSerializer.Serialize(new { errpr = ex.Message });
+                result = JsonSerializer.Serialize(new { Error = ex.Message });
             }
 
             return context.Response.WriteAsync(result);

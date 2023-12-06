@@ -5,7 +5,7 @@
         public static IApplicationBuilder UseCustomExceptions(this 
             IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<CustomExceptionsMiddleware>();
+            return builder.UseMiddleware<CustomExceptionHandlerMiddleware>();
         }
     }
 }
