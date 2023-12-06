@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Inno_Shop.Services.Products.Application.Common.Mappings;
+using Inno_Shop.Services.Products.Domain.Models;
 
 namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductDetails
 {

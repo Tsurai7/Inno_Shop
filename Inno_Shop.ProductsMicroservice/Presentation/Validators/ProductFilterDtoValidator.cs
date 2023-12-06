@@ -1,4 +1,7 @@
-﻿namespace Inno_Shop.Services.Products.Presentation.Validators
+﻿using FluentValidation;
+using Inno_Shop.Services.Products.Application.Dto;
+
+namespace Inno_Shop.Services.Products.Presentation.Validators
 {
     public class ProductFilterDtoValidator : AbstractValidator<ProductFilterDto>
     {

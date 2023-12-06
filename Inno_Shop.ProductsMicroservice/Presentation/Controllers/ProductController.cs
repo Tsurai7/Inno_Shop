@@ -1,129 +1,112 @@
-﻿
-
-using Inno_Shop.Services.Products.Presentation.Validators;
+﻿using AutoMapper;
+using Inno_Shop.Services.Products.Application.Dto;
+using Inno_Shop.Services.Products.Application.Products.Commands.CreateProduct;
+using Inno_Shop.Services.Products.Application.Products.Commands.DeleteProduct;
+using Inno_Shop.Services.Products.Application.Products.Queries.GetProductDetails;
+using Inno_Shop.Services.Products.Application.Products.Queries.GetProductList;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Inno_Shop.Services.Products.Presentation.Controllers
 {
-    [Route("api/products")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    [Route("api/[controller]")]
+    public class ProductController : BaseController
     {
-        private readonly IProductService _productService;
+        private readonly IMapper _mapper;
 
-        public ProductsController(IRepository<Product> repository, IProductService productService)
+        public ProductController(IMapper mapper)
         {
-            _productService = productService;
+            _mapper = mapper;
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<ProductListVm>> GetAll()
         {
-            var products = await _productService.GetAllAsync();
-            return Ok(products);
+            var query = new GetProductListQuery
+            {
+                UserId = UserId
+            };
+
+            var vm = await Mediator.Send(query);
+            return Ok(vm);
         }
 
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<ProductDetailsVm>> GetById(Guid id)
         {
-            var product = await _productService.GetByIdAsync(id);
+            var query = new GetProductDetailsQuery
+            {
+                UserId = UserId,
+                Id = id
+            };
 
-            if (product == null)
-                return NotFound();
+            var vm = await Mediator.Send(query);
 
-            return Ok(product);
+            return Ok(vm);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Product product)
+        public async Task<ActionResult> Create([FromBody] CreateProductDto createProductDto)
         {
-            var validator = new ProductValidator();
-            var validationResult = await validator.ValidateAsync(product);
+            var command = _mapper.Map<CreateProductCommand>(createProductDto);
 
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            command.UserId = UserId;
 
-            try
-            {
-                await _productService.AddAsync(product);
-                return CreatedAtAction(nameof(Create), new { id = product.Id }, product);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var noteId = await Mediator.Send(command);
+            
+            return Ok(noteId);
         }
 
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Product product)
+        public async Task<IActionResult> Update([FromBody] UpdateProductDto updateProductDto)
         {
-            var validator = new ProductValidator();
-            var validationResult = await validator.ValidateAsync(product);
+            var command = _mapper.Map<UpdateProductDto>(updateProductDto);
 
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            try
-            {
-                var productFromDb = await _productService.GetByTitleAsync(product.Title);
-
-                if (productFromDb == null)
-                    return NotFound(product.Id);
-
-                productFromDb.Title = product.Title;
-                productFromDb.Description = product.Description;
-                productFromDb.Price = product.Price; 
-                productFromDb.IsAvaiable = product.IsAvaiable;
-                productFromDb.UpdatedAt = DateTime.UtcNow;
-                return NoContent();
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var product = await _productService.GetByIdAsync(id);
-
-            if (product == null)
-                return NotFound();
-
-            await _productService.DeleteAsync(id);
+            await Mediator.Send(command);
 
             return NoContent();
         }
 
 
-        [HttpGet("filter")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductFilterDto filterParameters)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var validator = new ProductFilterDtoValidator();
-            var validationResult = await validator.ValidateAsync(filterParameters);
+            var command = new DeleteProductCommand
+            {
+                Id = id,
+                UserId = UserId
+            };
 
-            if (!validationResult.IsValid)            
-                return BadRequest(validationResult.Errors);
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+
+        //[HttpGet("filter")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductFilterDto filterParameters)
+        //{
+        //    var validator = new ProductFilterDtoValidator();
+        //    var validationResult = await validator.ValidateAsync(filterParameters);
+
+        //    if (!validationResult.IsValid)            
+        //        return BadRequest(validationResult.Errors);
             
 
-            try
-            {
-                var filteredProducts = await _productService.GetFilteredAsync(filterParameters);
-                return Ok(filteredProducts);
-            }
+        //    try
+        //    {
+        //        var filteredProducts = await _productService.GetFilteredAsync(filterParameters);
+        //        return Ok(filteredProducts);
+        //    }
 
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Inno_Shop.Services.Products.Infrastructure.Data;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductList
 {
@@ -19,6 +23,10 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductLis
         {
             var productsQuery = await _context.Products
                 .Where(product => product.UserId == request.UserId)
+                .ProjectTo<ProductLookUpDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return new ProductListVm { Products = productsQuery };
         }
     }
 }

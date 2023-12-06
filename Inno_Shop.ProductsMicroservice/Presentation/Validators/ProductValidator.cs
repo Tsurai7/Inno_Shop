@@ -1,4 +1,7 @@
-﻿namespace Inno_Shop.Services.Products.Presentation.Validators
+﻿using FluentValidation;
+using Inno_Shop.Services.Products.Domain.Models;
+
+namespace Inno_Shop.Services.Products.Presentation.Validators
 {
     public class ProductValidator : AbstractValidator<Product>
     {
@@ -17,8 +20,6 @@
             RuleFor(product => product.IsAvaiable)
                 .NotNull().WithMessage("Availability is required");
 
-            RuleFor(product => product.UserId)
-                .GreaterThan(0).WithMessage("UserId should be greater than 0");
         }
     }
 }

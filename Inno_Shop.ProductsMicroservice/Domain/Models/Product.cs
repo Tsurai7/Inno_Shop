@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Inno_Shop.Services.Products.Domain.Models
 {
@@ -6,7 +8,9 @@ namespace Inno_Shop.Services.Products.Domain.Models
     {
         [Key]
         [SwaggerSchema(ReadOnly = true)]
-        public long Id { get; set; }
+        public Guid Id { get; set; }
+        [SwaggerSchema(ReadOnly = true)]
+        public Guid UserId { get; set; }
         [Required]
         public string Title { get; set; } = string.Empty;
         [Required]
@@ -19,9 +23,5 @@ namespace Inno_Shop.Services.Products.Domain.Models
         public DateTime CreatedAt { get; set; }
         [SwaggerSchema(ReadOnly = true)]
         public DateTime? UpdatedAt { get; set; }
-
-
-        [SwaggerSchema(ReadOnly = true)]
-        public long UserId { get; set; }
     }
 }

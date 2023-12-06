@@ -1,3 +1,6 @@
+using Inno_Shop.Services.Products.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,8 +13,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProductsDbContext")));
 
-builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
