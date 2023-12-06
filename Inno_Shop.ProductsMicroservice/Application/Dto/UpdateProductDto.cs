@@ -7,8 +7,11 @@ namespace Inno_Shop.Services.Products.Application.Dto
 {
     public class UpdateProductDto : IMapWith<UpdateProductCommand>
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Title { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public bool IsAvailable { get; set; }
+
         public string Description { get; set; } = string.Empty;
 
         public void Mapping(Profile profile)
@@ -18,6 +21,10 @@ namespace Inno_Shop.Services.Products.Application.Dto
                 opt => opt.MapFrom(productDto => productDto.Id))
                 .ForMember(productCommand => productCommand.Title,
                 opt => opt.MapFrom(productDto => productDto.Title))
+                .ForMember(productCommand => productCommand.Price,
+                opt => opt.MapFrom(productDto => productDto.Price))
+                .ForMember(productCommand => productCommand.IsAvailable,
+                opt => opt.MapFrom(productDto => productDto.IsAvailable))
                 .ForMember(productCommand => productCommand.Description,
                 opt => opt.MapFrom(productDto => productDto.Description));
         }

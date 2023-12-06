@@ -13,10 +13,9 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
     {
         private readonly IMapper _mapper;
 
-        public ProductController(IMapper mapper)
-        {
+        public ProductController(IMapper mapper) =>      
             _mapper = mapper;
-        }
+        
 
         [HttpGet]
         public async Task<ActionResult<ProductListVm>> GetAll()
@@ -30,9 +29,9 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
             return Ok(vm);
         }
 
-
+         
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDetailsVm>> GetById(Guid id)
+        public async Task<ActionResult<ProductDetailsVm>> GetById(long id)
         {
             var query = new GetProductDetailsQuery
             {
@@ -40,7 +39,8 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
                 Id = id
             };
 
-            var vm = await Mediator.Send(query);
+
+            var vm = await Mediator.Send(query);     
 
             return Ok(vm);
         }
@@ -71,7 +71,7 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(long id)
         {
             var command = new DeleteProductCommand
             {
@@ -83,30 +83,5 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
 
             return NoContent();
         }
-
-
-        //[HttpGet("filter")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductFilterDto filterParameters)
-        //{
-        //    var validator = new ProductFilterDtoValidator();
-        //    var validationResult = await validator.ValidateAsync(filterParameters);
-
-        //    if (!validationResult.IsValid)            
-        //        return BadRequest(validationResult.Errors);
-            
-
-        //    try
-        //    {
-        //        var filteredProducts = await _productService.GetFilteredAsync(filterParameters);
-        //        return Ok(filteredProducts);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
     }
 }

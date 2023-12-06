@@ -18,8 +18,7 @@ namespace Inno_Shop.Services.Products.Application.Products.Commands.UpdateProduc
             CancellationToken cancellationToken)
         {
 
-            var entity =
-                await _context.Products.FirstOrDefaultAsync(product =>
+            var entity = await _context.Products.FirstOrDefaultAsync(product =>
                 product.Id == command.Id, cancellationToken);
 
             if (entity == null || entity.UserId != command.UserId)

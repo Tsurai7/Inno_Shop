@@ -4,7 +4,7 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductDet
 {
     public class GetProductDetailsQuery : IRequest<ProductDetailsVm>
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public long Id { get; set; }
+        public long UserId { get; set; }
     }
 }

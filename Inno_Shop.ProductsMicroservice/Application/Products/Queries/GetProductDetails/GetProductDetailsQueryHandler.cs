@@ -13,6 +13,12 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductDet
         private readonly ProductsDbContext _context;
         private readonly IMapper _mapper;
 
+        public GetProductDetailsQueryHandler(ProductsDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
         public async Task<ProductDetailsVm> Handle(GetProductDetailsQuery request,
             CancellationToken cancellationToken)
         {

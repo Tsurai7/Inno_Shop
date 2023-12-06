@@ -4,7 +4,7 @@ namespace Inno_Shop.Services.Products.Application.Products.Commands.DeleteProduc
 {
     public class DeleteProductCommand : IRequest<Unit>
     {
-        public Guid UserId {  get; set; }
-        public Guid Id { get; set; }
+        public long UserId {  get; set; }
+        public long Id { get; set; }
     }
 }

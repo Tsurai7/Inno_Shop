@@ -6,8 +6,10 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductLis
 {
     public class ProductLookUpDto : IMapWith<Product>
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string Title { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public bool IsAvaiable { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -15,7 +17,11 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductLis
                 .ForMember(productDto => productDto.Id,
                 opt => opt.MapFrom(product => product.Id))
                 .ForMember(productDto => productDto.Title,
-                opt => opt.MapFrom(product => product.Title));
+                opt => opt.MapFrom(product => product.Title))
+                .ForMember(productDto => productDto.Price,
+                opt => opt.MapFrom(product => product.Price))
+                .ForMember(productDto => productDto.IsAvaiable,
+                opt => opt.MapFrom(product => product.IsAvaiable));
         }
     }
 }

@@ -4,6 +4,6 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductLis
 {
     public class GetProductListQuery : IRequest<ProductListVm>
     {
-        public Guid UserId { get; set; }
+        public long UserId { get; set; }
     }
 }

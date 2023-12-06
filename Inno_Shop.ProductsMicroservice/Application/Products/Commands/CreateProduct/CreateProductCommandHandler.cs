@@ -5,7 +5,7 @@ using MediatR;
 namespace Inno_Shop.Services.Products.Application.Products.Commands.CreateProduct
 {
     public class CreateProductCommandHandler
-        : IRequestHandler<CreateProductCommand, Guid>
+        : IRequestHandler<CreateProductCommand, long>
     {
         private readonly ProductsDbContext _context;
 
@@ -13,7 +13,7 @@ namespace Inno_Shop.Services.Products.Application.Products.Commands.CreateProduc
             _context = context;
         
 
-        public async Task<Guid> Handle(CreateProductCommand command,
+        public async Task<long> Handle(CreateProductCommand command,
             CancellationToken cancellationToken)
         {
             Product product = new()
@@ -23,8 +23,8 @@ namespace Inno_Shop.Services.Products.Application.Products.Commands.CreateProduc
                 Title = command.Title,
                 Description = command.Description,
                 IsAvaiable = command.IsAvaiable,
-                CreatedAt = command.CreatedAt,
-                UpdatedAt = command.UpdatedAt,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = null,
             };
 
             await _context.Products.AddAsync(product, cancellationToken);

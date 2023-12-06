@@ -4,12 +4,12 @@ namespace Inno_Shop.Services.Products.Application.Products.Commands.UpdateProduc
 {
     public class UpdateProductCommand : IRequest<Unit>
     {
-        public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public long Id { get; set; }
+        public long UserId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-        public bool IsAvaiable { get; set; }
+        public bool IsAvailable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

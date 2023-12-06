@@ -24,7 +24,7 @@ namespace Inno_Shop.Services.Products.Application.Products.Queries.GetProductLis
             var productsQuery = await _context.Products
                 .Where(product => product.UserId == request.UserId)
                 .ProjectTo<ProductLookUpDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return new ProductListVm { Products = productsQuery };
         }
