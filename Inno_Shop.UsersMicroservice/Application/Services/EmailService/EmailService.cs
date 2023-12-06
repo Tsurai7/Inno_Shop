@@ -1,4 +1,10 @@
-﻿namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
+﻿using Inno_Shop.Services.Users.Application.Dtos;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using MimeKit.Text;
+
+namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
 {
     public class EmailService : IEmailService
     {

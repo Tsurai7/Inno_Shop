@@ -1,4 +1,6 @@
-﻿namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
+
+namespace Inno_Shop.UsersMicroservice.Domain.Interfaces
 {
     public interface IUserRepository : IDisposable 
     {

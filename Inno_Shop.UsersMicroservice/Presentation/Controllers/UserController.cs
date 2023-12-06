@@ -1,4 +1,8 @@
-﻿namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Inno_Shop.UsersMicroservice.Application.Services.UserService;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
     [Route("api/users")]
     [ApiController]

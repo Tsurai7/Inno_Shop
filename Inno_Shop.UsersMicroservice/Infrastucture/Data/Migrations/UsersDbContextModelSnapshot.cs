@@ -3,6 +3,10 @@
 
 #nullable disable
 
+using Inno_Shop.UsersMicroservice.Infrastucture.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+
 namespace Inno_Shop.Services.Users.Migrations
 {
     [DbContext(typeof(UsersDbContext))]

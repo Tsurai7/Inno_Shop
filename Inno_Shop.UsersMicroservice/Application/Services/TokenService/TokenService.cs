@@ -1,4 +1,9 @@
-﻿namespace Inno_Shop.UsersMicroservice.Application.Services.TokenService
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace Inno_Shop.UsersMicroservice.Application.Services.TokenService
 {
     public class TokenService : ITokenService
     {

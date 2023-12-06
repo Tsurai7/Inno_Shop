@@ -1,4 +1,6 @@
-﻿namespace Inno_Shop.Services.Users.Application.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Inno_Shop.Services.Users.Application.Dtos
 {
     public class LoginRequestDto
     {

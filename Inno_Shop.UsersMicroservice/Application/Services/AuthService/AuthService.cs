@@ -1,4 +1,6 @@
-﻿namespace Inno_Shop.Services.Users.Application.Services.AuthService
+﻿using System.Security.Cryptography;
+
+namespace Inno_Shop.Services.Users.Application.Services.AuthService
 {
     public class AuthService : IAuthService
     {

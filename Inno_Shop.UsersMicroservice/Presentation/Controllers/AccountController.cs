@@ -1,4 +1,14 @@
-﻿namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
+﻿using Inno_Shop.Services.Users.Application.Dtos;
+using Inno_Shop.Services.Users.Application.Services.AuthService;
+using Inno_Shop.Services.Users.Domain.Models.Dtos;
+using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Inno_Shop.UsersMicroservice.Application.Services.EmailService;
+using Inno_Shop.UsersMicroservice.Application.Services.TokenService;
+using Inno_Shop.UsersMicroservice.Application.Services.UserService;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
     [ApiController]
     [Route("api/account")]

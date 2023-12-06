@@ -1,4 +1,9 @@
-﻿namespace Inno_Shop.Services.Users.Domain.Repositories
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Inno_Shop.UsersMicroservice.Domain.Interfaces;
+using Inno_Shop.UsersMicroservice.Infrastucture.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace Inno_Shop.Services.Users.Domain.Repositories
 {
     public class UserRepository : IUserRepository
     {

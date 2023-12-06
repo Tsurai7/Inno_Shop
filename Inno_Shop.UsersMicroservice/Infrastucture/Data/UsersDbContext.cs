@@ -1,4 +1,7 @@
-﻿namespace Inno_Shop.UsersMicroservice.Infrastucture.Data
+﻿using Inno_Shop.Services.Users.Domain.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace Inno_Shop.UsersMicroservice.Infrastucture.Data
 {
     public class UsersDbContext : DbContext
     {
