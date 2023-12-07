@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/account")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly IUserService  _userService;
@@ -37,15 +37,15 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
             var user = await _userService.GetByEmailAsync(request.Email);
 
             if (user == null)
-                return BadRequest("Bad credentials");
+                return BadRequest("No such user");
             
 
             if (!_authService.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
-                return BadRequest("Bad credentials");
+                return BadRequest("Wrong password");
             
 
             if (user.VerifiedAt == null)
-                return BadRequest("Bad credentials");
+                return BadRequest("User is not verified");
             
 
             var accessToken = _tokenService.BuildToken(user.Name);

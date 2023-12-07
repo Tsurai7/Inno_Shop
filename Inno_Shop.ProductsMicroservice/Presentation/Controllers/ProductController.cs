@@ -6,6 +6,7 @@ using Inno_Shop.Services.Products.Application.Products.Queries.GetProductDetails
 using Inno_Shop.Services.Products.Application.Products.Queries.GetProductList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Inno_Shop.Services.Products.Presentation.Controllers
 {
@@ -13,10 +14,14 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
     public class ProductController : BaseController
     {
         private readonly IMapper _mapper;
+        private readonly IDistributedCache _cache;
 
-        public ProductController(IMapper mapper) =>      
+        public ProductController(IMapper mapper, IDistributedCache cache)
+        {
             _mapper = mapper;
-        
+            _cache = cache;
+        }
+
 
         [HttpGet]
         public async Task<ActionResult<ProductListVm>> GetAll()
@@ -30,6 +35,7 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
             return Ok(vm);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDetailsVm>> GetById(long id)
         {
@@ -46,7 +52,7 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult> Create([FromBody] CreateProductDto createProductDto)
         {
             var command = _mapper.Map<CreateProductCommand>(createProductDto);
@@ -59,7 +65,7 @@ namespace Inno_Shop.Services.Products.Presentation.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] UpdateProductDto updateProductDto)
         {
             var command = _mapper.Map<UpdateProductDto>(updateProductDto);

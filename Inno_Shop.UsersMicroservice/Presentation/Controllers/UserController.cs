@@ -4,17 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
 {
-    [Route("api/users")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         public readonly IUserService _userService;
 
-        public UserController(IUserService userService)
-        {
+        public UserController(IUserService userService) =>
             _userService = userService;
-        }
-
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -36,7 +34,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] User user)
         {
             try
@@ -51,7 +49,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] User user)
         {
             try

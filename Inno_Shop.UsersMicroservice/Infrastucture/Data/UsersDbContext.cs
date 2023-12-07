@@ -9,6 +9,7 @@ namespace Inno_Shop.UsersMicroservice.Infrastucture.Data
         public UsersDbContext(DbContextOptions<UsersDbContext> options) 
             : base(options) 
         {
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
