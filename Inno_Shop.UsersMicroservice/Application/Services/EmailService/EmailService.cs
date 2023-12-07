@@ -1,8 +1,8 @@
-﻿using MailKit.Security;
-using MimeKit.Text;
-using MimeKit;
+﻿using Inno_Shop.Services.Users.Application.Dtos;
 using MailKit.Net.Smtp;
-using Inno_Shop.Services.Users.Application.Dtos;
+using MailKit.Security;
+using MimeKit;
+using MimeKit.Text;
 
 namespace Inno_Shop.UsersMicroservice.Application.Services.EmailService
 {

@@ -1,4 +1,7 @@
-﻿namespace Inno_Shop.Services.Products.Infrastructure.Data
+﻿using Inno_Shop.Services.Products.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Inno_Shop.Services.Products.Infrastructure.Data
 {
     public class ProductsDbContext : DbContext
     {
@@ -10,11 +13,5 @@
             Database.EnsureCreated();
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    optionsBuilder
-        //        .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=products;Trusted_Connection=True;");
-        //}
     }
 }

@@ -1,20 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MediatR;
 
-namespace Inno_Shop.Services.Products.Domain.Models
+namespace Inno_Shop.Services.Products.Application.Products.Commands.CreateProduct
 {
-    public class Product
+    public class CreateProductCommand : IRequest<long>
     {
-        [Key]
         public long Id { get; set; }
         public long UserId { get; set; }
-        [Required]
         public string Title { get; set; } = string.Empty;
-        [Required]
         public string Description { get; set; } = string.Empty;
-        [Required]
         public decimal Price { get; set; }
         public bool IsAvaiable { get; set; }
-
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
