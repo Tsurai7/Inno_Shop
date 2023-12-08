@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - 8001:80
+
+
+  usermanagement.service:
+    container_name: users-service
+    image: ${DOCKER_REGISTRY-}usermanagementservice
+    build:
+      context: .
+      dockerfile: UserManagement.Service/Dockerfile
+
+
+  productmanagement.service:
+    container_name: products-service
+    image: ${DOCKER_REGISTRY-}productmanagementservice
+    build:
+      context: .
+      dockerfile: ProductManagement.Service/Dockerfile
