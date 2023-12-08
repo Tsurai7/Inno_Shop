@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\Inno_Shop.UsersMicroservice.props" />
-</Project>
