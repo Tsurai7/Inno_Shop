@@ -12,6 +12,7 @@ services:
 
 
   usermanagement.service:
+    container_name: users-service
     image: ${DOCKER_REGISTRY-}usermanagementservice
     build:
       context: .
@@ -19,10 +20,8 @@ services:
 
 
   productmanagement.service:
+    container_name: products-service
     image: ${DOCKER_REGISTRY-}productmanagementservice
     build:
       context: .
       dockerfile: ProductManagement.Service/Dockerfile
-
-  
-
