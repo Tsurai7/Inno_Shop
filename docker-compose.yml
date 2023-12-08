@@ -1,17 +1,28 @@
 version: '3.4'
 
 services:
-  inno_shop.services.users:
-    image: ${DOCKER_REGISTRY-}innoshopservicesusers
+  apigateway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}apigateway
     build:
       context: .
-      dockerfile: Inno_Shop.UsersMicroservice/Dockerfile
-   
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - 8001:80
 
-  inno_shop.services.products:
-    image: ${DOCKER_REGISTRY-}innoshopservicesproducts
+
+  usermanagement.service:
+    image: ${DOCKER_REGISTRY-}usermanagementservice
     build:
       context: .
-      dockerfile: Inno_Shop.ProductsMicroservice/Dockerfile
+      dockerfile: UserManagement.Service/Dockerfile
 
+
+  productmanagement.service:
+    image: ${DOCKER_REGISTRY-}productmanagementservice
+    build:
+      context: .
+      dockerfile: ProductManagement.Service/Dockerfile
+
+  
 

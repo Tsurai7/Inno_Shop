@@ -8,7 +8,11 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
         "inno_shop.services.products": "StartDebugging",
-        "inno_shop.services.users": "StartDebugging"
+        "inno_shop.services.users": "StartDebugging",
+        "apigateway": "StartDebugging",
+        "usersmanagement.service": "StartDebugging",
+        "productmanagement.service": "StartDebugging",
+        "usermanagement.service": "StartDebugging"
       }
     }
   }
