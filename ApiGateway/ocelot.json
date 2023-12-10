@@ -2,10 +2,10 @@
   "Routes": [
     {
       // products service
-      "UpstreamPathTemplate": "/api/product",
+      "UpstreamPathTemplate": "/api/Product",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
 
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "productmanagement.service",
@@ -13,13 +13,13 @@
         }
       ],
 
-      "DownstreamPathTemplate": "/api/product"
+      "DownstreamPathTemplate": "/api/Product"
     },
     {
-      "UpstreamPathTemplate": "/api/product/{id}",
+      "UpstreamPathTemplate": "/api/Product/{id}",
       "UpstreamHttpMethod": [ "Get", "Delete" ],
 
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "productmanagement.service",
@@ -27,37 +27,37 @@
         }
       ],
 
-      "DownstreamPathTemplate": "/api/product{id}"
+      "DownstreamPathTemplate": "/api/Product{id}"
     },
 
 
     // users service
 
     {
-      "UpstreamPathTemplate": "/api/user",
+      "UpstreamPathTemplate": "/api/User",
       "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
 
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "usermanagement.service",
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/user"
+      "DownstreamPathTemplate": "/api/User"
     },
     {
-      "UpstreamPathTemplate": "/api/user/{id}",
+      "UpstreamPathTemplate": "/api/User/{id}",
       "UpstreamHttpMethod": [ "Get", "Delete" ],
 
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "usermanagement.service",
           "Port": 80
         }
       ],
-      "DownstreamPathTemplate": "/api/user/{id}"
+      "DownstreamPathTemplate": "/api/User/{id}"
     }
   ],
   "GlobalConfiguration": {

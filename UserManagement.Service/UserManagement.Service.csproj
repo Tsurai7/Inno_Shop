@@ -10,9 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\Common\**" />
     <Compile Remove="Tests\**" />
+    <Content Remove="Application\Common\**" />
     <Content Remove="Tests\**" />
+    <EmbeddedResource Remove="Application\Common\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Application\Common\**" />
     <None Remove="Tests\**" />
   </ItemGroup>
 
@@ -33,10 +37,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Common\" />
   </ItemGroup>
 
 </Project>

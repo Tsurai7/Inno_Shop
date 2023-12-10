@@ -48,5 +48,8 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
         public async Task DeleteAsync(long id) =>
             await _userRepository.DeleteAsync(id);
 
+        public async Task SaveAsync() =>
+            await _userRepository.SaveAsync();
+
     }
 }

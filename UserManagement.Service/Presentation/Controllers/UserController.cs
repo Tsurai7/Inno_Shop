@@ -34,7 +34,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         }
 
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] User user)
         {
             try
@@ -49,7 +49,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
         }
 
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] User user)
         {
             try

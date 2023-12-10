@@ -11,5 +11,6 @@ namespace Inno_Shop.UsersMicroservice.Application.Services.UserService
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(long id);
+        Task SaveAsync();
     }
 }

@@ -111,6 +111,7 @@ namespace Inno_Shop.UsersMicroservice.Presentation.Controllers
             }
 
             user.VerifiedAt = DateTime.Now;
+            await _userService.SaveAsync();
 
             return Ok("Email confirmed successfully.");
         }
